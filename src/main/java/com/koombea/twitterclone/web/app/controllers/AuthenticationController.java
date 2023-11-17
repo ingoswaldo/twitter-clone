@@ -1,7 +1,7 @@
 package com.koombea.twitterclone.web.app.controllers;
 
 import com.koombea.twitterclone.web.app.models.entities.User;
-import com.koombea.twitterclone.web.app.repositories.UserRepository;
+import com.koombea.twitterclone.web.app.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,24 +22,20 @@ import org.springframework.web.context.annotation.SessionScope;
 @SessionAttributes("user")
 public class AuthenticationController {
     @Autowired
-    private final UserRepository repository;
-
-    public AuthenticationController(UserRepository repository) {
-        this.repository = repository;
-    }
+    private UserService service;
 
     @GetMapping({"/sign-up"})
     public String signUp(Model model) {
         model.addAttribute("user", new User());
-        return "users/new";
+        return "auth/sign-up";
     }
 
     @PostMapping("/sign-up")
     public String create(@Valid User user, BindingResult result, Model model) {
         model.addAttribute("user", user);
-        if (result.hasErrors()) return "users/new";
+        if (result.hasErrors()) return "auth/sign-up";
 
-        repository.save(user);
+        service.create(user.getEmail(), user.getUsername(), user.getFullName(), user.getPassword());
         return "redirect:/login";
     }
 }
