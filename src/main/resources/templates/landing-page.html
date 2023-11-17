@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="https://thymeleaf.org" >
+<html th:replace="~{layout :: layout(~{::title}, ~{::section})}" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
     <title>Twitter Clone</title>
 </head>
 <body>
-<h1>Welcome to Twitter!!!</h1>
-<a th:href="@{/sign-up}">Sign Up</a>
-<a th:href="@{/login}">Log In</a>
+<section>
+    <h1>Welcome to Twitter!!!</h1>
+    <a th:href="@{/sign-up}">Sign Up</a>
+</section>
 </body>
 </html>
