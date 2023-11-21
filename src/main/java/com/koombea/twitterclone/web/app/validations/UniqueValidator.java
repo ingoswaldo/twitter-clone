@@ -1,3 +1,8 @@
+/*
+ * @creator: Oswaldo Montes
+ * @date: November 16, 2023
+ *
+ */
 package com.koombea.twitterclone.web.app.validations;
 
 import com.koombea.twitterclone.web.app.services.UserService;
@@ -6,11 +11,6 @@ import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-/*
- * @creator: Oswaldo Montes
- * @date: November 16, 2023
- *
- */
 public class UniqueValidator implements ConstraintValidator<Unique, String> {
     @Autowired
     private UserService userService;

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html th:replace="~{layout :: layout(~{::title}, ~{::section})}" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>Twitter Clone</title>
+</head>
+<body>
+<section>
+    <h1>Welcome to Twitter clone: @<span sec:authentication="name"></span>!!!</h1>
+    <a sec:authorize="!isAuthenticated()" th:href="@{/sign-up}">Sign Up</a>
+    <a sec:authorize="!isAuthenticated()" th:href="@{/login}">Log In</a>
+    <form id="logoutForm" sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post">
+        <input type="hidden" name="_method" value="delete">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+        <button onclick="document.getElementById('logoutForm').submit();" type="submit" >Log Out</button>
+    </form>
+</section>
+</body>
+</html>

@@ -1,3 +1,8 @@
+/*
+ * @creator: Oswaldo Montes
+ * @date: November 15, 2023
+ *
+ */
 package com.koombea.twitterclone.web.app.validations;
 
 import jakarta.validation.Constraint;
@@ -8,11 +13,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-/*
- * @creator: Oswaldo Montes
- * @date: November 15, 2023
- *
- */
 @Constraint(validatedBy = PasswordMatchesValidator.class)
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})

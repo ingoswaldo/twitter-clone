@@ -1,24 +1,26 @@
+/*
+ * @creator: Oswaldo Montes
+ * @date: November 14, 2023
+ *
+ */
 package com.koombea.twitterclone.web.app.models.entities;
 
-import com.koombea.twitterclone.web.app.repositories.UserRepository;
 import com.koombea.twitterclone.web.app.validations.PasswordMatches;
 import com.koombea.twitterclone.web.app.validations.Unique;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.ColumnTransformer;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
-/*
- * @creator: Oswaldo Montes
- * @date: November 14, 2023
- *
- */
 @Entity
 @PasswordMatches
 @Table(name = "users", uniqueConstraints = { @UniqueConstraint(columnNames = {"email", "username"})},
@@ -26,45 +28,72 @@ import java.time.LocalDateTime;
 public class User implements Serializable {
     private static final Long serialVersionUID = 1L;
 
+    @Getter
     @Id
+    @Setter
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @NotEmpty
     @Email
+    @Getter
+    @NotEmpty
+    @Setter
     @Unique(fieldName = "email")
     @Column(nullable = false)
-    @ColumnTransformer(forColumn = "email", write = "LOWER(email)")
+    @ColumnTransformer(write = "LOWER(?)")
     private String email;
 
+    @Getter
     @NotEmpty
+    @Setter
     @Column(nullable = false)
-    @ColumnTransformer(forColumn = "username", write = "LOWER(username)")
+    @ColumnTransformer(write = "LOWER(?)")
     @Unique(fieldName = "username")
     @Size(min = 3)
     private String username;
 
+    @Getter
     @NotEmpty
+    @Setter
     @Size(min = 3)
     @Column(nullable = false)
-    @ColumnTransformer(forColumn = "full_name",write = "LOWER(full_name)")
+    @ColumnTransformer(write = "LOWER(?)")
     private String fullName;
 
+    @Getter
     @NotEmpty
-    @Size(min = 8)
+    @Setter
     @Column(nullable = false)
+    @Size(min = 8)
     private String password;
 
+    @Getter
+    @Setter
     @Transient
     private String passwordConfirmation;
 
+    @Getter
+    @Setter
+    @Column(columnDefinition = "boolean default true", nullable = false)
+    private Boolean enabled;
+
     @CreationTimestamp
+    @Getter
+    @Setter
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
+    @Getter
+    @Setter
     @UpdateTimestamp
     @Column(nullable = false)
     private LocalDateTime updatedAt;
+
+    @Getter
+    @Setter
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private List<Role> roles;
 
     public User() {
         this.email = "";
@@ -72,6 +101,7 @@ public class User implements Serializable {
         this.fullName = "";
         this.password = "";
         this.passwordConfirmation = "";
+        this.enabled = true;
     }
 
     public User(String email, String username, String fullName, String password, String passwordConfirmation) {
@@ -80,57 +110,6 @@ public class User implements Serializable {
         this.fullName = fullName;
         this.password = password;
         this.passwordConfirmation = passwordConfirmation;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public String getPasswordConfirmation() {
-        return passwordConfirmation;
-    }
-
-    public void setPasswordConfirmation(String passwordConfirmation) {
-        this.passwordConfirmation = passwordConfirmation;
+        this.enabled = true;
     }
 }

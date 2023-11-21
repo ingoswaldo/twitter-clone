@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html th:replace="~{layout :: layout(~{::title}, ~{::section})}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Login</title>
+</head>
+<body>
+<section>
+    <h1>Login</h1>
+    <form th:action="@{/login}" method="post">
+        <ul th:if="${param.error}">
+            <li>Invalid username or password</li>
+        </ul>
+        <div>
+            <label for="username">Username</label>
+            <input type="text" name="username" id="username">
+        </div>
+        <div>
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password">
+        </div>
+        <div>
+            <button type="submit">Log In</button>
+        </div>
+        <div>
+            <a th:href="@{/sign-up}">Sign Up</a>
+        </div>
+    </form>
+</section>
+</body>
+</html>
