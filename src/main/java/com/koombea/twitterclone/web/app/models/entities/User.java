@@ -14,26 +14,14 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnTransformer;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
 @PasswordMatches
 @Table(name = "users", uniqueConstraints = { @UniqueConstraint(columnNames = {"email", "username"})},
         indexes = { @Index(name = "email_index", columnList = "email"), @Index(name = "username_index", columnList = "username")})
-public class User implements Serializable {
-    private static final Long serialVersionUID = 1L;
-
-    @Getter
-    @Id
-    @Setter
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
-
+public class User extends BaseEntity {
     @Email
     @Getter
     @NotEmpty
@@ -77,23 +65,16 @@ public class User implements Serializable {
     @Column(columnDefinition = "boolean default true", nullable = false)
     private Boolean enabled;
 
-    @CreationTimestamp
-    @Getter
-    @Setter
-    @Column(nullable = false)
-    private LocalDateTime createdAt;
-
-    @Getter
-    @Setter
-    @UpdateTimestamp
-    @Column(nullable = false)
-    private LocalDateTime updatedAt;
-
     @Getter
     @Setter
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private List<Role> roles;
+
+    @Getter
+    @Setter
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Post> posts;
 
     public User() {
         this.email = "";

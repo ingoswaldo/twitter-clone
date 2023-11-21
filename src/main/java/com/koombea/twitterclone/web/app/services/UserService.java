@@ -47,4 +47,8 @@ public class UserService {
             throw new RuntimeException(e);
         }
     }
+
+    public User findByUsername(String username) {
+        return userRepository.findByUsernameAndEnabled(username, true);
+    }
 }

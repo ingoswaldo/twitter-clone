@@ -6,13 +6,31 @@
 
 package com.koombea.twitterclone.web.app.controllers;
 
+import com.koombea.twitterclone.web.app.models.entities.User;
+import com.koombea.twitterclone.web.app.services.PostService;
+import com.koombea.twitterclone.web.app.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.context.annotation.SessionScope;
 
 @Controller
+@SessionScope
 public class IndexController {
+    @Autowired
+    private PostService postService;
+
+    @Autowired
+    private UserService userService;
+
     @GetMapping({"", "/"})
-    public String index() {
+    @Transactional(readOnly = true)
+    public String index(Model model, Authentication authentication) {
+        User user = userService.findByUsername(authentication.getName());
+        model.addAttribute("totalPosts", postService.countByUserId(user.getId()));
         return "index";
     }
 }

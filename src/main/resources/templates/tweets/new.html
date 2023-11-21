@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html th:replace="~{layout :: layout(~{::title}, ~{::section})}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Post Tweet</title>
+</head>
+<body>
+<section>
+    <h1>Post Tweet</h1>
+    <form th:action="@{/tweets}" th:object="${post}" method="post">
+        <div th:insert="~{shared/form-errors}"></div>
+        <div>
+            <label for="message">Message</label>
+            <textarea th:field="*{message}" id="message" cols="30" rows="10"></textarea>
+        </div>
+        <div>
+            <button type="submit">Post</button>
+        </div>
+    </form>
+</section>
+</body>
+</html>

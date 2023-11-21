@@ -5,22 +5,15 @@
  */
 package com.koombea.twitterclone.web.app.models.entities;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.Serializable;
-
 @Entity
 @Table(name = "authorities", uniqueConstraints = { @UniqueConstraint(columnNames = { "user_id", "authority" }) })
-public class Role implements Serializable {
-    private static final long serialVersionUID = 1L;
-
-    @Id
-    @Getter
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
-
+public class Role extends BaseEntity {
     @Getter
     @Setter
     private String authority;
