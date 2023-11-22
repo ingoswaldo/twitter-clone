@@ -12,19 +12,17 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "posts", indexes = { @Index(name = "user_id_index", columnList = "user_id") })
 public class Post extends BaseEntity {
-    @Getter
     @NotEmpty
     @Size(max = 280)
-    @Setter
     @Column(nullable = false, length = 280)
     private String message;
 
-    @Getter
     @NotNull
-    @Setter
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private User user;
 

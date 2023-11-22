@@ -14,7 +14,7 @@
         <button onclick="document.getElementById('logoutForm').submit();" type="submit" >Log Out</button>
     </form>
     <div sec:authorize="hasAnyRole('ROLE_USER')">
-        <a th:href="@{/tweets}">Tweet</a>
+        <a th:href="@{/tweets/new}">Tweet</a>
     </div>
     <div>
         <h3>Total Tweets: <span th:text="${totalPosts}"></span></h3>

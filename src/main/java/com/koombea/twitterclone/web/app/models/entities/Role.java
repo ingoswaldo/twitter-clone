@@ -11,11 +11,11 @@ import jakarta.persistence.UniqueConstraint;
 import lombok.Getter;
 import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "authorities", uniqueConstraints = { @UniqueConstraint(columnNames = { "user_id", "authority" }) })
 public class Role extends BaseEntity {
-    @Getter
-    @Setter
     private String authority;
 
     public Role() {

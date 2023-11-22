@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.context.annotation.SessionScope;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @SessionScope
@@ -34,19 +35,22 @@ public class PostsControllers {
     @Autowired
     private UserService userService;
 
-    @GetMapping("")
+    @GetMapping("/new")
     public String postForm(Model model) {
         model.addAttribute("post", new Post());
         return "tweets/new";
     }
 
     @PostMapping("")
-    public String create(@Valid Post post, BindingResult result, Model model, Authentication authentication) {
+    public String create(@Valid Post post, BindingResult result, Model model, Authentication authentication, RedirectAttributes redirectAttributes) {
         model.addAttribute("post", post);
         if (result.hasErrors()) return "tweets/new";
 
         User user = userService.findByUsername(authentication.getName());
-        postService.create(user, post.getMessage());
+        String message = "✅ Tweet posted!";
+        if (postService.create(user, post.getMessage()).getId().isEmpty()) message = "🚨 Tweet does not posted!";
+
+        redirectAttributes.addFlashAttribute("message", message);
         return "redirect:/";
     }
 }

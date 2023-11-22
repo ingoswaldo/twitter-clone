@@ -14,24 +14,20 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
 @MappedSuperclass
 public class BaseEntity implements Serializable {
     private static final Long serialVersionUID = 1L;
 
     @Id
-    @Getter
-    @Setter
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
     @CreationTimestamp
-    @Getter
-    @Setter
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
-    @Getter
-    @Setter
     @UpdateTimestamp
     @Column(nullable = false)
     private LocalDateTime updatedAt;

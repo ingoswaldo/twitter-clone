@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.context.annotation.SessionScope;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @SessionScope
@@ -34,11 +35,15 @@ public class AuthenticationController {
     }
 
     @PostMapping("/sign-up")
-    public String create(@Valid User user, BindingResult result, Model model) {
+    public String create(@Valid User user, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
         model.addAttribute("user", user);
         if (result.hasErrors()) return "auth/sign-up";
 
-        service.create(user.getEmail(), user.getUsername(), user.getFullName(), user.getPassword());
+        String message = "✅ User registered!";
+        User userCreated = service.create(user.getEmail(), user.getUsername(), user.getFullName(), user.getPassword());
+        if (userCreated.getId().isEmpty()) message = "🚨 User does not registered!";
+
+        redirectAttributes.addFlashAttribute("message", message);
         return "redirect:/login";
     }
 
