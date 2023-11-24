@@ -26,7 +26,7 @@ import java.util.List;
 public class User extends BaseEntity {
     @Email
     @NotEmpty
-    @Unique(fieldName = "email")
+    @Unique(entityName = "User", columnName = "email")
     @Column(nullable = false)
     @ColumnTransformer(write = "LOWER(?)")
     private String email;
@@ -34,7 +34,7 @@ public class User extends BaseEntity {
     @NotEmpty
     @Column(nullable = false)
     @ColumnTransformer(write = "LOWER(?)")
-    @Unique(fieldName = "username")
+    @Unique(entityName = "User", columnName = "username")
     @Size(min = 3)
     private String username;
 
@@ -62,6 +62,12 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Post> posts;
 
+    @OneToMany(mappedBy = "follower", cascade = CascadeType.ALL)
+    private List<Follow> followers;
+
+    @OneToMany(mappedBy = "followed", cascade = CascadeType.ALL)
+    private List<Follow> followed;
+
     public User() {
         this.email = "";
         this.username = "";
@@ -78,5 +84,10 @@ public class User extends BaseEntity {
         this.password = password;
         this.passwordConfirmation = passwordConfirmation;
         this.enabled = true;
+    }
+
+    public String humanizeFullName() {
+        String name = this.fullName;
+        return name.substring(0, 1).toUpperCase() + name.substring(1);
     }
 }

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html th:replace="~{layout :: layout(~{::title}, ~{::section})}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Followers</title>
+</head>
+<body>
+<section>
+    <h1>👀 Follower Users</h1>
+    <span th:if="${followers.size() == 0}">No followers</span>
+    <div th:each="follower : ${followers}" th:with="followerUser=${follower.getFollower()}">
+        <span th:text="|${followerUser.humanizeFullName()} (@${followerUser.getUsername()})|"></span>
+    </div>
+</section>
+</body>
+</html>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html th:fragment="layout (title, content)" xmlns:th="http://www.thymeleaf.org">
+<html th:fragment="layout (title, content)" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
   <title th:replace="${title}">Layout Title</title>
 </head>
@@ -7,6 +7,7 @@
 <div>
   <h4 th:text="${message}"></h4>
 </div>
+<a sec:authorize="isAuthenticated()" th:href="@{/}">Home</a>
 <div th:replace="${content}">
   <p>Layout content</p>
 </div>

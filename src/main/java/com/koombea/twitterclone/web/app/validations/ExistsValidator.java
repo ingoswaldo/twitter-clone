@@ -10,16 +10,16 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class UniqueValidator implements ConstraintValidator<Unique, String> {
+public class ExistsValidator implements ConstraintValidator<Exists, String> {
     @Autowired
-    private ValidatorService validatorService;
+    private ValidatorService service;
 
     private String entityName;
 
     private String columnName;
 
     @Override
-    public void initialize(Unique constraintAnnotation) {
+    public void initialize(Exists constraintAnnotation) {
         this.entityName = constraintAnnotation.entityName();
         this.columnName = constraintAnnotation.columnName();
     }
@@ -27,7 +27,7 @@ public class UniqueValidator implements ConstraintValidator<Unique, String> {
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
         try {
-            return !validatorService.existsBy(entityName, columnName, value);
+            return service.existsBy(entityName, columnName, value);
         } catch (NullPointerException exception) {
             return true;
         }

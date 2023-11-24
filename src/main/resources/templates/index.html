@@ -15,9 +15,9 @@
     </form>
     <div sec:authorize="hasAnyRole('ROLE_USER')">
         <a th:href="@{/tweets/new}">Tweet</a>
-    </div>
-    <div>
-        <h3>Total Tweets: <span th:text="${totalPosts}"></span></h3>
+        <h4>Total Tweets: <span th:text="${totalPosts}"></span></h4>
+        <h4>Total Followers: <a th:href="@{/follows/followers}" th:text="${totalFollowers}"></a></h4>
+        <h4>Total Followed: <a th:href="@{/follows/followed}" th:text="${totalFollowed}"></a></h4>
     </div>
 </section>
 </body>

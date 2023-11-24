@@ -41,14 +41,14 @@ public class PostsControllers {
         return "tweets/new";
     }
 
-    @PostMapping("")
+    @PostMapping
     public String create(@Valid Post post, BindingResult result, Model model, Authentication authentication, RedirectAttributes redirectAttributes) {
         model.addAttribute("post", post);
         if (result.hasErrors()) return "tweets/new";
 
         User user = userService.findByUsername(authentication.getName());
         String message = "✅ Tweet posted!";
-        if (postService.create(user, post.getMessage()).getId().isEmpty()) message = "🚨 Tweet does not posted!";
+        if (postService.create(user, post.getMessage()).getId().isEmpty()) message = "🚨 Tweet was not posted!";
 
         redirectAttributes.addFlashAttribute("message", message);
         return "redirect:/";

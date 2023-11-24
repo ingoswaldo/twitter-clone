@@ -39,9 +39,9 @@ public class AuthenticationController {
         model.addAttribute("user", user);
         if (result.hasErrors()) return "auth/sign-up";
 
-        String message = "✅ User registered!";
+        String message = "✅ You were registered!";
         User userCreated = service.create(user.getEmail(), user.getUsername(), user.getFullName(), user.getPassword());
-        if (userCreated.getId().isEmpty()) message = "🚨 User does not registered!";
+        if (userCreated.getId() == null) message = "🚨 You were not registered!";
 
         redirectAttributes.addFlashAttribute("message", message);
         return "redirect:/login";

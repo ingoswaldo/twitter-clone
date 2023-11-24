@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html th:replace="~{layout :: layout(~{::title}, ~{::section})}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Follow User</title>
+</head>
+<body>
+<section>
+    <h1>Follow User</h1>
+    <form th:action="@{/follows/new}" th:object="${follow}" method="post">
+        <div th:insert="~{shared/form-errors}"></div>
+        <div>
+            <label for="username">Username</label>
+            <input type="text" th:field="*{username}" id="username">
+        </div>
+        <div>
+            <button type="submit">Follow</button>
+        </div>
+    </form>
+</section>
+</body>
+</html>

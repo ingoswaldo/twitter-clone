@@ -1,6 +1,6 @@
 /*
  * @creator: Oswaldo Montes
- * @date: November 16, 2023
+ * @date: November 23, 2023
  *
  */
 package com.koombea.twitterclone.web.app.validations;
@@ -14,11 +14,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Constraint(validatedBy = UniqueValidator.class)
+@Constraint(validatedBy = ExistsValidator.class)
 @Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Unique {
-    String message() default "A record with this value exists in the database";
+public @interface Exists {
+    String message() default "This value must exist in the table";
 
     Class<?>[] groups() default {};
 
