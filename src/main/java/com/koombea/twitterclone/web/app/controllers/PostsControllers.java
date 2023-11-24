@@ -6,9 +6,7 @@
 package com.koombea.twitterclone.web.app.controllers;
 
 import com.koombea.twitterclone.web.app.models.entities.Post;
-import com.koombea.twitterclone.web.app.models.entities.User;
 import com.koombea.twitterclone.web.app.services.PostService;
-import com.koombea.twitterclone.web.app.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -32,9 +30,6 @@ public class PostsControllers {
     @Autowired
     private PostService postService;
 
-    @Autowired
-    private UserService userService;
-
     @GetMapping("/new")
     public String postForm(Model model) {
         model.addAttribute("post", new Post());
@@ -46,9 +41,9 @@ public class PostsControllers {
         model.addAttribute("post", post);
         if (result.hasErrors()) return "tweets/new";
 
-        User user = userService.findByUsername(authentication.getName());
         String message = "✅ Tweet posted!";
-        if (postService.create(user, post.getMessage()).getId().isEmpty()) message = "🚨 Tweet was not posted!";
+        Post postCreated = postService.create(authentication.getName(), post.getMessage());
+        if (postCreated.getId() == null) message = "🚨 Tweet was not posted!";
 
         redirectAttributes.addFlashAttribute("message", message);
         return "redirect:/";

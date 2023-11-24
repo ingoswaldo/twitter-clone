@@ -13,14 +13,18 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PostService {
-    @Autowired
     private final PostRepository postRepository;
 
-    public PostService(PostRepository postRepository) {
+    private final UserService userService;
+
+    @Autowired
+    public PostService(PostRepository postRepository, UserService userService) {
         this.postRepository = postRepository;
+        this.userService = userService;
     }
 
-    public Post create(User user, String message) {
+    public Post create(String username, String message) {
+        User user = userService.findByUsername(username);
         return postRepository.save(new Post(user, message));
     }
 
