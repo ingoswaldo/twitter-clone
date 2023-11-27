@@ -10,10 +10,9 @@ import com.koombea.twitterclone.web.app.models.entities.User;
 import com.koombea.twitterclone.web.app.repositories.FollowRepository;
 import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.Comparator;
-import java.util.List;
 
 @Service
 public class FollowService {
@@ -50,19 +49,13 @@ public class FollowService {
         return followRepository.countByFollowerId(followerId);
     }
 
-    public List<Follow> getFollowedSortedByUsernameLoggedIn(String username) {
+    public Page<Follow> getPaginatedFollowedByUsername(String username, Pageable pageable) {
         User user = userService.findByUsername(username);
-        List<Follow> followedUsers = user.getFollowers();
-        followedUsers.sort(Comparator.comparing(follow -> follow.getFollowed().getUsername()));
-
-        return followedUsers;
+        return followRepository.findAllByFollowerId(user.getId(), pageable);
     }
 
-    public List<Follow> getFollowersSortedByUsernameLoggedIn(String username) {
+    public Page<Follow> getPaginatedFollowersByUsername(String username, Pageable pageable) {
         User user = userService.findByUsername(username);
-        List<Follow> followers = user.getFollowed();
-        followers.sort(Comparator.comparing(follow -> follow.getFollower().getUsername()));
-
-        return followers;
+        return followRepository.findAllByFollowedId(user.getId(), pageable);
     }
 }

@@ -6,7 +6,7 @@
 <body>
 <section>
     <h1>👀 Follower Users</h1>
-    <span th:if="${followers.size() == 0}">No followers</span>
+    <span th:if="${followers.getSize() == 0}">No followers</span>
     <div th:each="follower : ${followers}" th:with="followerUser=${follower.getFollower()}">
         <span th:text="|${followerUser.humanizeFullName()} (@${followerUser.getUsername()})|"></span>
     </div>

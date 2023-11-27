@@ -11,16 +11,16 @@ import com.koombea.twitterclone.web.app.services.UserService;
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.annotation.SessionScope;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -37,14 +37,16 @@ public class FollowsControllers {
     private FollowService followService;
 
     @GetMapping("/followers")
-    public String indexFollowers(Model model, Authentication authentication) {
-        model.addAttribute("followers", followService.getFollowersSortedByUsernameLoggedIn(authentication.getName()));
+    public String indexFollowers(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, Model model, Authentication authentication) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("follower.fullName"));
+        model.addAttribute("followers", followService.getPaginatedFollowersByUsername(authentication.getName(), pageable));
         return "follows/index-follower";
     }
 
     @GetMapping("/followed")
-    public String indexFollowed(Model model, Authentication authentication) {
-        model.addAttribute("followedUsers", followService.getFollowedSortedByUsernameLoggedIn(authentication.getName()));
+    public String indexFollowed(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, Model model, Authentication authentication) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("followed.fullName"));
+        model.addAttribute("followedUsers", followService.getPaginatedFollowedByUsername(authentication.getName(), pageable));
         return "follows/index-followed";
     }
 

@@ -1,0 +1,4 @@
+<div th:fragment="paginate (resource,pageNumber,pageSize,hasPrevious,hasNext)">
+  <a th:href="@{'/' + ${resource}(page=${pageNumber - 1}, size=${pageSize})}" th:if="${hasPrevious}">Previous</a>
+  <a th:href="@{'/' + ${resource}(page=${pageNumber + 1}, size=${pageSize})}" th:if="${hasNext}">Next</a>
+</div>

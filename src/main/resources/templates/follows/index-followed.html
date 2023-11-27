@@ -6,12 +6,13 @@
 <body>
 <section>
     <h1>🕵🏼‍♂️ Followed Users:</h1>
-    <span th:if="${followedUsers.size() == 0}">No followed users</span>
+    <span th:if="${followedUsers.getSize() == 0}">No followed users</span>
     <br>
     <a th:href="@{/follows/new}">Follow another user</a>
     <div th:each="followed : ${followedUsers}" th:with="followedUser=${followed.getFollowed()}">
         <span th:text="|${followedUser.humanizeFullName()} (@${followedUser.getUsername()})|"></span>
     </div>
+    <div th:replace="~{shared/pagination :: paginate('follows/followed',${followedUsers.getNumber()},${followedUsers.getSize()},${followedUsers.hasPrevious()},${followedUsers.hasNext()})}"></div>
 </section>
 </body>
 </html>
