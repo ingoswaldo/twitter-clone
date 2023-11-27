@@ -8,12 +8,14 @@ package com.koombea.twitterclone.web.app.services;
 import com.koombea.twitterclone.web.app.models.entities.Role;
 import com.koombea.twitterclone.web.app.models.entities.User;
 import com.koombea.twitterclone.web.app.repositories.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -36,7 +38,10 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User findByUsername(String username) {
-        return userRepository.findByUsernameAndEnabled(username, true);
+    public User findByUsername(String username) throws EntityNotFoundException {
+        Optional<User> user = userRepository.findByUsernameAndEnabled(username, true);
+        if (user.isEmpty()) throw new EntityNotFoundException("❌ The user does not exist!!");
+
+        return user.get();
     }
 }

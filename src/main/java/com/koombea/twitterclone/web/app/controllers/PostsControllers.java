@@ -27,8 +27,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("/tweets")
 @Secured("ROLE_USER")
 public class PostsControllers {
+    private final PostService postService;
+
     @Autowired
-    private PostService postService;
+    public PostsControllers(PostService postService) {
+        this.postService = postService;
+    }
 
     @GetMapping("/new")
     public String postForm(Model model) {

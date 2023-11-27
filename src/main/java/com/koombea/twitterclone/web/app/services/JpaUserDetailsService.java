@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class JpaUserDetailsService implements UserDetailsService {
@@ -28,16 +29,16 @@ public class JpaUserDetailsService implements UserDetailsService {
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsernameAndEnabled(username, true);
-        if (user == null) throw new UsernameNotFoundException("Username does not found");
+        Optional<User> user = userRepository.findByUsernameAndEnabled(username, true);
+        if (user.isEmpty()) throw new UsernameNotFoundException("Username does not found");
 
         List<GrantedAuthority> authorities = new ArrayList<>();
-        for (Role role : user.getRoles()) {
+        for (Role role : user.get().getRoles()) {
             authorities.add(new SimpleGrantedAuthority(role.getAuthority()));
         }
 
         if (authorities.isEmpty()) throw new UsernameNotFoundException("Username does not have assigned roles");
 
-        return new org.springframework.security.core.userdetails.User(username, user.getPassword(), user.getEnabled(), true, true, true, authorities);
+        return new org.springframework.security.core.userdetails.User(username, user.get().getPassword(), user.get().getEnabled(), true, true, true, authorities);
     }
 }

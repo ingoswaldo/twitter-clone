@@ -10,7 +10,7 @@
     <br>
     <a th:href="@{/follows/new}">Follow another user</a>
     <div th:each="followed : ${followedUsers}" th:with="followedUser=${followed.getFollowed()}">
-        <span th:text="|${followedUser.humanizeFullName()} (@${followedUser.getUsername()})|"></span>
+        <span th:text="${followedUser.humanizeFullName()}"></span> <a th:href="@{'/' + ${followedUser.getUsername()}}" th:text="|(@${followedUser.getUsername()})|"></a>
     </div>
     <div th:replace="~{shared/pagination :: paginate('follows/followed',${followedUsers.getNumber()},${followedUsers.getSize()},${followedUsers.hasPrevious()},${followedUsers.hasNext()})}"></div>
 </section>

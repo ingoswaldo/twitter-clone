@@ -23,8 +23,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @SessionScope
 @SessionAttributes("user")
 public class AuthenticationController {
+    private final UserService service;
+
     @Autowired
-    private UserService service;
+    public AuthenticationController(UserService service) {
+        this.service = service;
+    }
 
     @GetMapping({"/sign-up"})
     public String signUpForm(Model model, Authentication authentication) {

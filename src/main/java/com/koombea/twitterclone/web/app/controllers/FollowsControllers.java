@@ -7,7 +7,6 @@ package com.koombea.twitterclone.web.app.controllers;
 
 import com.koombea.twitterclone.web.app.models.entities.Follow;
 import com.koombea.twitterclone.web.app.services.FollowService;
-import com.koombea.twitterclone.web.app.services.UserService;
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,11 +29,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("/follows")
 @Secured("ROLE_USER")
 public class FollowsControllers {
-    @Autowired
-    private UserService userService;
+
+    private final FollowService followService;
 
     @Autowired
-    private FollowService followService;
+    public FollowsControllers(FollowService followService) {
+        this.followService = followService;
+    }
 
     @GetMapping("/followers")
     public String indexFollowers(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, Model model, Authentication authentication) {
