@@ -24,7 +24,7 @@ public class PostService {
     }
 
     public Post create(String username, String message) {
-        User user = userService.findByUsername(username);
+        User user = userService.findUserByUsername(username);
         return postRepository.save(new Post(user, message));
     }
 

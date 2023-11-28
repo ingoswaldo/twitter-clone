@@ -19,7 +19,7 @@ public interface FollowRepository extends JpaRepository<Follow, String> {
 
     Boolean existsByFollowerIdAndFollowedId(String followerId, String followedId);
 
-    Page<Follow> findAllByFollowerId(String followerId, Pageable pageable);
+    <T> Page<T> findAllByFollowerId(String followerId, Pageable pageable, Class<T> type);
 
-    Page<Follow> findAllByFollowedId(String followerId, Pageable pageable);
+    <T> Page<T> findAllByFollowedId(String followedId, Pageable pageable, Class<T> type);
 }

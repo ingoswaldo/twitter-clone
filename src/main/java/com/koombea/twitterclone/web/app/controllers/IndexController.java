@@ -6,7 +6,7 @@
 
 package com.koombea.twitterclone.web.app.controllers;
 
-import com.koombea.twitterclone.web.app.models.entities.User;
+import com.koombea.twitterclone.web.app.models.projections.user.NamesWithIdOnly;
 import com.koombea.twitterclone.web.app.services.FollowService;
 import com.koombea.twitterclone.web.app.services.PostService;
 import com.koombea.twitterclone.web.app.services.UserService;
@@ -41,7 +41,7 @@ public class IndexController {
     @Transactional(readOnly = true)
     public String index(Model model, Authentication authentication) {
         try {
-            User user = userService.findByUsername(authentication.getName());
+            NamesWithIdOnly user = userService.findNamesByUsername(authentication.getName());
             model.addAttribute("totalPosts", postService.countByUserId(user.getId()));
             model.addAttribute("totalFollowed", followService.countFollowedByFollowerId(user.getId()));
             model.addAttribute("totalFollowers", followService.countFollowersByFollowedId(user.getId()));

@@ -8,7 +8,12 @@
     <h1>👀 Follower Users</h1>
     <span th:if="${followers.getSize() == 0}">No followers</span>
     <div th:each="follower : ${followers}" th:with="followerUser=${follower.getFollower()}">
-        <span th:text="${followerUser.humanizeFullName()}"></span> <a th:href="@{'/' + ${followerUser.getUsername()}}" th:text="|(@${followerUser.getUsername()})|"></a>
+        <span th:text="${followerUser.humanizeFullName()}"></span>
+        <a th:href="@{'/' + ${followerUser.getUsername()}}" th:text="|(@${followerUser.getUsername()})|"></a>
+        <form id="followForm" th:if="true" th:action="@{/follows/add}" method="post" style="display: inline">
+            <input type="hidden" name="followedId" th:value="${followerUser.getId()}">
+            <button onclick="document.getElementById('followForm').submit();" type="submit" >Follow</button>
+        </form>
     </div>
 </section>
 </body>

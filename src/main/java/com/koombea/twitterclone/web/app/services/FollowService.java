@@ -7,6 +7,9 @@ package com.koombea.twitterclone.web.app.services;
 
 import com.koombea.twitterclone.web.app.models.entities.Follow;
 import com.koombea.twitterclone.web.app.models.entities.User;
+import com.koombea.twitterclone.web.app.models.projections.follow.FollowedOnly;
+import com.koombea.twitterclone.web.app.models.projections.follow.FollowerOnly;
+import com.koombea.twitterclone.web.app.models.projections.user.IdOnly;
 import com.koombea.twitterclone.web.app.repositories.FollowRepository;
 import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,8 +34,8 @@ public class FollowService {
             throw new ValidationException("You can not follow yourself!");
         }
 
-        User follower = userService.findByUsername(followerUsername);
-        User followed = userService.findByUsername(followedUsername);
+        User follower = userService.findUserByUsername(followerUsername);
+        User followed = userService.findUserByUsername(followedUsername);
         Follow follow = new Follow(follower, followed, followerUsername);
         if (followRepository.existsByFollowerIdAndFollowedId(follower.getId(), followed.getId())) {
             throw new ValidationException("You are following this user");
@@ -49,13 +52,13 @@ public class FollowService {
         return followRepository.countByFollowerId(followerId);
     }
 
-    public Page<Follow> getPaginatedFollowedByUsername(String username, Pageable pageable) {
-        User user = userService.findByUsername(username);
-        return followRepository.findAllByFollowerId(user.getId(), pageable);
+    public Page<FollowedOnly> getPaginatedFollowedByUsername(String username, Pageable pageable) {
+        IdOnly user = userService.findIdByUsername(username);
+        return followRepository.findAllByFollowerId(user.getId(), pageable, FollowedOnly.class);
     }
 
-    public Page<Follow> getPaginatedFollowersByUsername(String username, Pageable pageable) {
-        User user = userService.findByUsername(username);
-        return followRepository.findAllByFollowedId(user.getId(), pageable);
+    public Page<FollowerOnly> getPaginatedFollowersByUsername(String username, Pageable pageable) {
+        IdOnly user = userService.findIdByUsername(username);
+        return followRepository.findAllByFollowedId(user.getId(), pageable, FollowerOnly.class);
     }
 }

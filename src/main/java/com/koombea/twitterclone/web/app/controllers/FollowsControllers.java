@@ -6,13 +6,17 @@
 package com.koombea.twitterclone.web.app.controllers;
 
 import com.koombea.twitterclone.web.app.models.entities.Follow;
+import com.koombea.twitterclone.web.app.models.projections.user.NamesWithIdOnly;
 import com.koombea.twitterclone.web.app.services.FollowService;
+import com.koombea.twitterclone.web.app.services.UserService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -21,6 +25,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.annotation.SessionScope;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -32,9 +37,12 @@ public class FollowsControllers {
 
     private final FollowService followService;
 
+    private final UserService userService;
+
     @Autowired
-    public FollowsControllers(FollowService followService) {
+    public FollowsControllers(FollowService followService, UserService userService) {
         this.followService = followService;
+        this.userService = userService;
     }
 
     @GetMapping("/followers")
@@ -75,5 +83,15 @@ public class FollowsControllers {
 
         redirectAttributes.addFlashAttribute("message", message);
         return "redirect:/follows/followed";
+    }
+
+    @PostMapping("/add")
+    public String create(@RequestParam String followedId) {
+        try {
+            NamesWithIdOnly followed = userService.findNamesById(followedId);
+            return "redirect:/" + followed.getUsername();
+        } catch (EntityNotFoundException exception) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, exception.getMessage());
+        }
     }
 }
