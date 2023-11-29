@@ -6,7 +6,7 @@
 package com.koombea.twitterclone.web.app.services;
 
 import com.koombea.twitterclone.web.app.models.entities.Role;
-import com.koombea.twitterclone.web.app.models.entities.User;
+import com.koombea.twitterclone.web.app.models.projections.user.AuthenticationOnly;
 import com.koombea.twitterclone.web.app.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -29,7 +29,7 @@ public class JpaUserDetailsService implements UserDetailsService {
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> user = userRepository.findByUsernameAndEnabled(username, true);
+        Optional<AuthenticationOnly> user = userRepository.findByUsernameAndEnabled(username, true, AuthenticationOnly.class);
         if (user.isEmpty()) throw new UsernameNotFoundException("Username does not found");
 
         List<GrantedAuthority> authorities = new ArrayList<>();
@@ -39,6 +39,7 @@ public class JpaUserDetailsService implements UserDetailsService {
 
         if (authorities.isEmpty()) throw new UsernameNotFoundException("Username does not have assigned roles");
 
-        return new org.springframework.security.core.userdetails.User(username, user.get().getPassword(), user.get().getEnabled(), true, true, true, authorities);
+        AuthenticationOnly authUser = user.get();
+        return new org.springframework.security.core.userdetails.User(username, authUser.getPassword(), authUser.getEnabled(), true, true, true, authorities);
     }
 }

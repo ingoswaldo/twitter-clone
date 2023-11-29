@@ -5,7 +5,7 @@
  */
 package com.koombea.twitterclone.web.app.controllers;
 
-import com.koombea.twitterclone.web.app.models.entities.User;
+import com.koombea.twitterclone.web.app.models.projections.user.NamesWithIdOnly;
 import com.koombea.twitterclone.web.app.services.FollowService;
 import com.koombea.twitterclone.web.app.services.UserService;
 import jakarta.persistence.EntityNotFoundException;
@@ -36,7 +36,7 @@ public class ProfileController {
     @GetMapping("")
     public String profile(@PathVariable String username, Model model) {
         try {
-            User userProfile = userService.findByUsername(username);
+            NamesWithIdOnly userProfile = userService.findNamesByUsername(username);
             model.addAttribute("userProfile", userProfile);
             model.addAttribute("totalFollowers", followService.countFollowersByFollowedId(userProfile.getId()));
             model.addAttribute("totalFollowed", followService.countFollowedByFollowerId(userProfile.getId()));

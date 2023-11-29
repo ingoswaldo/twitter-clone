@@ -85,9 +85,4 @@ public class User extends BaseEntity {
         this.passwordConfirmation = passwordConfirmation;
         this.enabled = true;
     }
-
-    public String humanizeFullName() {
-        String name = this.fullName;
-        return name.substring(0, 1).toUpperCase() + name.substring(1);
-    }
 }
