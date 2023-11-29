@@ -9,8 +9,8 @@
     <span th:if="${followedUsers.getSize() == 0}">No followed users</span>
     <br>
     <a th:href="@{/follows/new}">Follow another user</a>
-    <div th:each="followed : ${followedUsers}" th:with="followedUser=${followed.getFollowed()}">
-        <span th:text="${followedUser.humanizeFullName()}"></span> <a th:href="@{'/' + ${followedUser.getUsername()}}" th:text="|(@${followedUser.getUsername()})|"></a>
+    <div th:each="followed : ${followedUsers}">
+        <span th:text="${followed.getFollowedFullNameHumanized()}"></span> <a th:href="@{'/' + ${followed.getFollowedUsername()}}" th:text="|(@${followed.getFollowedUsername()})|"></a>
     </div>
     <div th:replace="~{shared/pagination :: paginate('follows/followed',${followedUsers.getNumber()},${followedUsers.getSize()},${followedUsers.hasPrevious()},${followedUsers.hasNext()})}"></div>
 </section>

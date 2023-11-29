@@ -5,6 +5,8 @@
  */
 package com.koombea.twitterclone.web.app.models.projections.user;
 
+import com.koombea.twitterclone.web.app.shared.utilities.StringUtils;
+
 public interface NamesWithIdOnly {
     String getId();
 
@@ -12,7 +14,7 @@ public interface NamesWithIdOnly {
 
     String getUsername();
 
-    default String humanizeFullName() {
-        return getFullName().substring(0,1).toUpperCase().concat(getFullName().substring(1));
+    default String getFullNameHumanized() {
+        return StringUtils.humanizeText(getFullName());
     }
 }

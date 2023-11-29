@@ -7,8 +7,8 @@ package com.koombea.twitterclone.web.app.services;
 
 import com.koombea.twitterclone.web.app.models.entities.Follow;
 import com.koombea.twitterclone.web.app.models.entities.User;
-import com.koombea.twitterclone.web.app.models.projections.follow.FollowedOnly;
-import com.koombea.twitterclone.web.app.models.projections.follow.FollowerOnly;
+import com.koombea.twitterclone.web.app.models.projections.follow.FollowedSummary;
+import com.koombea.twitterclone.web.app.models.projections.follow.FollowerSummary;
 import com.koombea.twitterclone.web.app.models.projections.user.IdOnly;
 import com.koombea.twitterclone.web.app.repositories.FollowRepository;
 import jakarta.validation.ValidationException;
@@ -52,13 +52,13 @@ public class FollowService {
         return followRepository.countByFollowerId(followerId);
     }
 
-    public Page<FollowedOnly> getPaginatedFollowedByUsername(String username, Pageable pageable) {
+    public Page<FollowedSummary> getPaginatedFollowedOnlyByUsername(String username, Pageable pageable) {
         IdOnly user = userService.findIdByUsername(username);
-        return followRepository.findAllByFollowerId(user.getId(), pageable, FollowedOnly.class);
+        return followRepository.findAllByFollowerId(user.getId(), pageable, FollowedSummary.class);
     }
 
-    public Page<FollowerOnly> getPaginatedFollowersByUsername(String username, Pageable pageable) {
+    public Page<FollowerSummary> getPaginatedFollowersOnlyByUsername(String username, Pageable pageable) {
         IdOnly user = userService.findIdByUsername(username);
-        return followRepository.findAllByFollowedId(user.getId(), pageable, FollowerOnly.class);
+        return followRepository.findAllByFollowedId(user.getId(), pageable, FollowerSummary.class);
     }
 }

@@ -5,7 +5,7 @@
 </head>
 <body>
 <section sec:authorize="hasAnyRole('ROLE_USER')">
-    <h1 th:text="|${userProfile.humanizeFullName()} (@${userProfile.getUsername()})|"></h1>
+    <h1 th:text="|${userProfile.getFullNameHumanized()} (@${userProfile.getUsername()})|"></h1>
     <div>
         <h4>Total Followers: <a href="#" th:text="${totalFollowers}"></a></h4>
         <h4>Total Followed: <a href="#" th:text="${totalFollowed}"></a></h4>

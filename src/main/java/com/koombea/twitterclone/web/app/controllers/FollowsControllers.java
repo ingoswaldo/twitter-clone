@@ -48,14 +48,14 @@ public class FollowsControllers {
     @GetMapping("/followers")
     public String indexFollowers(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, Model model, Authentication authentication) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("follower.fullName"));
-        model.addAttribute("followers", followService.getPaginatedFollowersByUsername(authentication.getName(), pageable));
+        model.addAttribute("followers", followService.getPaginatedFollowersOnlyByUsername(authentication.getName(), pageable));
         return "follows/index-follower";
     }
 
     @GetMapping("/followed")
     public String indexFollowed(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, Model model, Authentication authentication) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("followed.fullName"));
-        model.addAttribute("followedUsers", followService.getPaginatedFollowedByUsername(authentication.getName(), pageable));
+        model.addAttribute("followedUsers", followService.getPaginatedFollowedOnlyByUsername(authentication.getName(), pageable));
         return "follows/index-followed";
     }
 
