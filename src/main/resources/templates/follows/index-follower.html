@@ -10,10 +10,7 @@
     <div th:each="follower : ${followers}">
         <span th:text="${follower.getFollowerFullNameHumanized()}"></span>
         <a th:href="@{'/' + ${follower.getFollowerUsername()}}" th:text="|(@${follower.getFollowerUsername()})|"></a>
-        <form id="followBackForm" th:unless="${follower.getIsFollowBack()}" th:action="@{/follows/add}" method="post" style="display: inline">
-            <input type="hidden" name="followedId" th:value="${follower.getFollowerId()}">
-            <button onclick="document.getElementById('followBackForm').submit();" type="submit" >Follow</button>
-        </form>
+        <div th:replace="~{shared/follow-button :: followButton(${follower.getIsFollowBack()},${follower.getFollowerId()})}"></div>
     </div>
     <div th:replace="~{shared/pagination :: paginate('follows/followers',${followers.getNumber()},${followers.getSize()},${followers.hasPrevious()},${followers.hasNext()})}"></div>
 </section>

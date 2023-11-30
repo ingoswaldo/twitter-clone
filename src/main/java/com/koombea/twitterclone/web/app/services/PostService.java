@@ -7,8 +7,11 @@ package com.koombea.twitterclone.web.app.services;
 
 import com.koombea.twitterclone.web.app.models.entities.Post;
 import com.koombea.twitterclone.web.app.models.entities.User;
+import com.koombea.twitterclone.web.app.models.projections.post.MessageOnly;
 import com.koombea.twitterclone.web.app.repositories.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -30,5 +33,9 @@ public class PostService {
 
     public Long countByUserId(String userId) {
         return postRepository.countPostByUserId(userId);
+    }
+
+    public Page<MessageOnly> getPaginatedPostsByUserId(String userId, Pageable pageable) {
+        return postRepository.findAllByUserId(userId, pageable, MessageOnly.class);
     }
 }

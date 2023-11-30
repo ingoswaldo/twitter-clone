@@ -81,6 +81,10 @@ public class FollowService {
         return followRepository.findOneByFollowerIdAndFollowedId(followerId, followedId, Follow.class);
     }
 
+    public Boolean isFollowed(String followerId, String followedId) {
+        return followRepository.existsByFollowerIdAndFollowedId(followerId, followedId);
+    }
+
     @Validated({CreateFollow.class, Default.class})
     public void markAsFollowBack(Follow followCreated) {
         Optional<Follow> followedBack = findFollowedBack(followCreated.getFollowed().getId(), followCreated.getFollower().getId());
