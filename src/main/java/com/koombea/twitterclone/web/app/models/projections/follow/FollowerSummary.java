@@ -14,6 +14,8 @@ public interface FollowerSummary {
 
     String getFollowerFullName();
 
+    Boolean getIsFollowBack();
+
     default String getFollowerFullNameHumanized() {
         return StringUtils.humanizeText(getFollowerFullName());
     }

@@ -6,7 +6,7 @@
 package com.koombea.twitterclone.web.app.controllers;
 
 import com.koombea.twitterclone.web.app.models.entities.Follow;
-import com.koombea.twitterclone.web.app.models.projections.user.NamesWithIdOnly;
+import com.koombea.twitterclone.web.app.models.entities.User;
 import com.koombea.twitterclone.web.app.services.FollowService;
 import com.koombea.twitterclone.web.app.services.UserService;
 import jakarta.persistence.EntityNotFoundException;
@@ -73,7 +73,7 @@ public class FollowsControllers {
         String message = "✅ User followed!";
 
         try {
-            Follow followCreated = followService.create(authentication.getName(), follow.getUsername());
+            Follow followCreated = followService.createByUsernames(authentication.getName(), follow.getUsername());
             if (followCreated.getId() == null) message = "🚨 User was not followed!";
 
         } catch (ValidationException exception) {
@@ -86,12 +86,20 @@ public class FollowsControllers {
     }
 
     @PostMapping("/add")
-    public String create(@RequestParam String followedId) {
+    public String create(@RequestParam String followedId, Authentication authentication, RedirectAttributes redirectAttributes) {
         try {
-            NamesWithIdOnly followed = userService.findNamesById(followedId);
+            User followed = userService.findUserById(followedId);
+            String message = "✅ User followed!";
+            Follow followCreated = followService.createByUsernameAndFollowed(authentication.getName(), followed);
+            if (followCreated.getId() == null) message = "🚨 User was not followed!";
+
+            redirectAttributes.addFlashAttribute("message", message);
             return "redirect:/" + followed.getUsername();
         } catch (EntityNotFoundException exception) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, exception.getMessage());
+        } catch (ValidationException exception) {
+            redirectAttributes.addFlashAttribute("message", exception.getMessage());
+            return "redirect:/follows/followers";
         }
     }
 }

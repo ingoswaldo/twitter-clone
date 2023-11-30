@@ -6,7 +6,7 @@
 <body>
 <section>
     <h1>🕵🏼‍♂️ Followed Users:</h1>
-    <span th:if="${followedUsers.getSize() == 0}">No followed users</span>
+    <span th:if="${followedUsers.getTotalElements() == 0}">No followed users</span>
     <br>
     <a th:href="@{/follows/new}">Follow another user</a>
     <div th:each="followed : ${followedUsers}">

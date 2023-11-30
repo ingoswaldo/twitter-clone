@@ -60,6 +60,13 @@ public class UserService {
         return user.get();
     }
 
+    public User findUserById(String userId) throws EntityNotFoundException {
+        Optional<User> user = userRepository.findByIdAndEnabled(userId, true, User.class);
+        if (user.isEmpty()) throw new EntityNotFoundException("❌ The user does not exist!!");
+
+        return user.get();
+    }
+
     public NamesWithIdOnly findNamesById(String id) throws EntityNotFoundException {
         Optional<NamesWithIdOnly> user = userRepository.findByIdAndEnabled(id, true, NamesWithIdOnly.class);
         if (user.isEmpty()) throw new EntityNotFoundException("❌ The user does not exist!!");
