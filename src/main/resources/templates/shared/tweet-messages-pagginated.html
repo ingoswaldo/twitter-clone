@@ -1,0 +1,9 @@
+<div th:fragment="tweetsPaginated (tweets)">
+  <h4 th:if="${tweets.getTotalElements() < 1}">No tweets</h4>
+  <div th:if="${tweets.getTotalElements() > 0}">
+    <h4>Tweets</h4>
+    <div th:each="tweet : ${tweets}">
+      💬 <span th:text="${tweet.getMessage()}"></span> <br>
+    </div>
+  </div>
+</div>

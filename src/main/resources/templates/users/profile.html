@@ -10,6 +10,8 @@
         <h4>Total Followers: <a href="#" th:text="${totalFollowers}"></a></h4>
         <h4>Total Followed: <a href="#" th:text="${totalFollowed}"></a></h4>
     </div>
+    <div th:replace="~{shared/tweet-messages-pagginated :: tweetsPaginated(${tweets})}"></div>
+    <div th:replace="~{shared/pagination :: paginate(${userProfile.getUsername()},${tweets.getNumber()},${tweets.getSize()},${tweets.hasPrevious()},${tweets.hasNext()})}"></div>
 </section>
 </body>
 </html>
