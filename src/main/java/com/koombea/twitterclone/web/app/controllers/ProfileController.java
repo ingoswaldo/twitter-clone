@@ -5,6 +5,7 @@
  */
 package com.koombea.twitterclone.web.app.controllers;
 
+import com.koombea.twitterclone.web.app.models.projections.user.IdOnly;
 import com.koombea.twitterclone.web.app.models.projections.user.NamesWithIdOnly;
 import com.koombea.twitterclone.web.app.services.FollowService;
 import com.koombea.twitterclone.web.app.services.PostService;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,13 +44,17 @@ public class ProfileController {
     }
 
     @GetMapping("")
-    public String profile(@PathVariable String username, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, Model model) {
+    public String profile(@PathVariable String username, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, Model model, Authentication authentication) {
+        if (authentication.getName().equals(username)) return "forward:/";
+
         try {
             Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
             NamesWithIdOnly userProfile = userService.findNamesByUsername(username);
+            IdOnly userAuthenticated = userService.findIdByUsername(authentication.getName());
             model.addAttribute("userProfile", userProfile);
             model.addAttribute("totalFollowers", followService.countFollowersByFollowedId(userProfile.getId()));
             model.addAttribute("totalFollowed", followService.countFollowedByFollowerId(userProfile.getId()));
+            model.addAttribute("isFollowed", followService.isFollowed(userAuthenticated.getId(), userProfile.getId()));
             model.addAttribute("tweets", postService.getPaginatedPostsByUserId(userProfile.getId(), pageable));
             return "users/profile";
         } catch (EntityNotFoundException exception) {
