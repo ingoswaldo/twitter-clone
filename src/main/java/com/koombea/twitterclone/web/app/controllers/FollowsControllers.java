@@ -86,7 +86,7 @@ public class FollowsControllers {
     }
 
     @PostMapping("/add")
-    public String create(@RequestParam String followedId, @RequestParam(required = false) String redirectUrlMapping, Authentication authentication, RedirectAttributes redirectAttributes) {
+    public String create(@RequestParam String followedId, @RequestParam(required = false, defaultValue = "") String redirectUrlMapping, Authentication authentication, RedirectAttributes redirectAttributes) {
         try {
             User followed = userService.findUserById(followedId);
             String message = "✅ User followed!";
