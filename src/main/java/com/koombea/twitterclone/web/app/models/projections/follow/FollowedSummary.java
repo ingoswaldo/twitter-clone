@@ -6,6 +6,8 @@
 package com.koombea.twitterclone.web.app.models.projections.follow;
 
 public interface FollowedSummary {
+    String getFollowedId();
+
     String getFollowedUsername();
 
     String getFollowedFullName();

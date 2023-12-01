@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html th:replace="~{layout :: layout(~{::title}, ~{::section})}" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <title th:text="|@${userProfile.getUsername()} followers|"></title>
+</head>
+<body>
+<section sec:authorize="hasAnyRole('ROLE_USER')">
+  <h1 th:text="|${userProfile.getFullNameHumanized()} followers|"></h1>
+  <div th:each="follower : ${followers}">
+    <span th:text="${follower.getFollowerFullNameHumanized()}"></span>
+    <a th:href="@{'/' + ${follower.getFollowerUsername()}}" th:text="|(@${follower.getFollowerUsername()})|"></a>
+    <div th:unless="${userAuthenticated.getId().equals(follower.getFollowerId())}" style="display: inline">
+      <div th:replace="~{shared/follow-button :: followButtonWithRedirection(${follower.isPresentInFollowedSummaryList(userAuthenticatedFollowed)},${follower.getFollowerId()},'follows/followed')}"></div>
+    </div>
+  </div>
+</section>
+</body>
+</html>

@@ -48,7 +48,7 @@ public class FollowsControllers {
     @GetMapping("/followers")
     public String indexFollowers(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, Model model, Authentication authentication) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("follower.fullName"));
-        model.addAttribute("followers", followService.getPaginatedFollowersOnlyByUsername(authentication.getName(), pageable));
+        model.addAttribute("followers", followService.getPaginatedFollowersSummaryByUsername(authentication.getName(), pageable));
         return "follows/index-follower";
     }
 
@@ -86,7 +86,7 @@ public class FollowsControllers {
     }
 
     @PostMapping("/add")
-    public String create(@RequestParam String followedId, Authentication authentication, RedirectAttributes redirectAttributes) {
+    public String create(@RequestParam String followedId, @RequestParam(required = false) String redirectUrlMapping, Authentication authentication, RedirectAttributes redirectAttributes) {
         try {
             User followed = userService.findUserById(followedId);
             String message = "✅ User followed!";
@@ -94,12 +94,14 @@ public class FollowsControllers {
             if (followCreated.getId() == null) message = "🚨 User was not followed!";
 
             redirectAttributes.addFlashAttribute("message", message);
+            if (!redirectUrlMapping.isEmpty()) return "redirect:/" + redirectUrlMapping;
+
             return "redirect:/" + followed.getUsername();
         } catch (EntityNotFoundException exception) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, exception.getMessage());
         } catch (ValidationException exception) {
             redirectAttributes.addFlashAttribute("message", exception.getMessage());
-            return "redirect:/follows/followers";
+            return "redirect:/follows/followed";
         }
     }
 }

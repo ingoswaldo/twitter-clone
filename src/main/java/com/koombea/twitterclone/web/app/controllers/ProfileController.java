@@ -61,4 +61,22 @@ public class ProfileController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, exception.getMessage());
         }
     }
+
+    @GetMapping("/followers")
+    public String followers(@PathVariable String username, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, Model model, Authentication authentication) {
+        if (authentication.getName().equals(username)) return "forward:/follows/followers";
+
+        try {
+            Pageable pageable = PageRequest.of(page, size, Sort.by("follower.fullName"));
+            NamesWithIdOnly userProfile = userService.findNamesByUsername(username);
+            IdOnly userAuthenticated = userService.findIdByUsername(authentication.getName());
+            model.addAttribute("userProfile", userProfile);
+            model.addAttribute("userAuthenticated", userAuthenticated);
+            model.addAttribute("followers", followService.getPaginatedFollowersSummaryByUsername(username, pageable));
+            model.addAttribute("userAuthenticatedFollowed", followService.getFollowedSummaryByFollowedId(userAuthenticated.getId()));
+            return "users/followers";
+        } catch (EntityNotFoundException exception) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, exception.getMessage());
+        }
+    }
 }

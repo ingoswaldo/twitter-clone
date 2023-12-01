@@ -1,0 +1,7 @@
+<div th:fragment="followerPaginated(followers)">
+    <div th:each="follower : ${followers}">
+        <span th:text="${follower.getFollowerFullNameHumanized()}"></span>
+        <a th:href="@{'/' + ${follower.getFollowerUsername()}}" th:text="|(@${follower.getFollowerUsername()})|"></a>
+        <div th:replace="~{shared/follow-button :: followButton(${follower.getIsFollowBack()},${follower.getFollowerId()})}"></div>
+    </div>
+</div>

@@ -69,12 +69,20 @@ public class FollowService {
 
     public Page<FollowedSummary> getPaginatedFollowedOnlyByUsername(String username, Pageable pageable) {
         IdOnly user = userService.findIdByUsername(username);
-        return followRepository.findAllByFollowerId(user.getId(), pageable, FollowedSummary.class);
+        return followRepository.findAllPaginatedByFollowerId(user.getId(), pageable, FollowedSummary.class);
     }
 
-    public Page<FollowerSummary> getPaginatedFollowersOnlyByUsername(String username, Pageable pageable) {
+    public Page<FollowerSummary> getPaginatedFollowersSummaryByUsername(String username, Pageable pageable) {
         IdOnly user = userService.findIdByUsername(username);
-        return followRepository.findAllByFollowedId(user.getId(), pageable, FollowerSummary.class);
+        return followRepository.findAllPaginatedByFollowedId(user.getId(), pageable, FollowerSummary.class);
+    }
+
+    public List<FollowerSummary> getFollowersSummaryByFollowedId(String followedId) {
+        return followRepository.findAllByFollowedId(followedId, FollowerSummary.class);
+    }
+
+    public List<FollowedSummary> getFollowedSummaryByFollowedId(String followerId) {
+        return followRepository.findAllByFollowerId(followerId, FollowedSummary.class);
     }
 
     public Optional<Follow> findFollowedBack(String followerId, String followedId) {

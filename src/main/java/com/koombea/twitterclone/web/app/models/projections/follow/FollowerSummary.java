@@ -7,6 +7,8 @@ package com.koombea.twitterclone.web.app.models.projections.follow;
 
 import com.koombea.twitterclone.web.app.shared.utilities.StringUtils;
 
+import java.util.List;
+
 public interface FollowerSummary {
     String getFollowerId();
 
@@ -18,5 +20,9 @@ public interface FollowerSummary {
 
     default String getFollowerFullNameHumanized() {
         return StringUtils.humanizeText(getFollowerFullName());
+    }
+
+    default boolean isPresentInFollowedSummaryList(List<FollowedSummary> followedSummaryList) {
+        return followedSummaryList.stream().anyMatch(item -> item.getFollowedId().equals(getFollowerId()));
     }
 }
