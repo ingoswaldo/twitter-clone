@@ -6,8 +6,7 @@
 package com.koombea.twitterclone.web.app.models.projections.follow;
 
 import com.koombea.twitterclone.web.app.shared.utilities.StringUtils;
-
-import java.util.List;
+import org.springframework.beans.factory.annotation.Value;
 
 public interface FollowerSummary {
     String getFollowerId();
@@ -18,11 +17,10 @@ public interface FollowerSummary {
 
     Boolean getIsFollowBack();
 
+    @Value("#{@followBean.isFollowedBy(args[0],target.followerId)}")
+    Boolean isFollowedBy(String followerId);
+
     default String getFollowerFullNameHumanized() {
         return StringUtils.humanizeText(getFollowerFullName());
-    }
-
-    default boolean isPresentInFollowedSummaryList(List<FollowedSummary> followedSummaryList) {
-        return followedSummaryList.stream().anyMatch(item -> item.getFollowedId().equals(getFollowerId()));
     }
 }

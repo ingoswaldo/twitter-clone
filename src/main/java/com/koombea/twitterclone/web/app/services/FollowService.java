@@ -66,7 +66,7 @@ public class FollowService {
         return followRepository.countByFollowerId(followerId);
     }
 
-    public Page<FollowedSummary> getPaginatedFollowedOnlyByUsername(String username, Pageable pageable) {
+    public Page<FollowedSummary> getPaginatedFollowedSummaryByUsername(String username, Pageable pageable) {
         IdOnly user = userService.findIdByUsername(username);
         return followRepository.findAllPaginatedByFollowerId(user.getId(), pageable, FollowedSummary.class);
     }
