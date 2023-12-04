@@ -55,7 +55,7 @@ public class FollowsControllers {
     @GetMapping("/followed")
     public String indexFollowed(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, Model model, Authentication authentication) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("followed.fullName"));
-        model.addAttribute("followedUsers", followService.getPaginatedFollowedOnlyByUsername(authentication.getName(), pageable));
+        model.addAttribute("followedUsers", followService.getPaginatedFollowedSummaryByUsername(authentication.getName(), pageable));
         return "follows/index-followed";
     }
 

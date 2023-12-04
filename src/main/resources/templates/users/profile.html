@@ -8,7 +8,7 @@
     <h1 th:text="|${userProfile.getFullNameHumanized()} (@${userProfile.getUsername()})|"></h1>
     <div>
         <h4>Total Followers: <a th:href="@{'/' + ${userProfile.getUsername() + '/followers'}}" th:text="${totalFollowers}"></a></h4>
-        <h4>Total Followed: <a href="#" th:text="${totalFollowed}"></a></h4>
+        <h4>Total Followed: <a th:href="@{'/' + ${userProfile.getUsername() + '/followed'}}" th:text="${totalFollowed}"></a></h4>
     </div>
     <div th:replace="~{shared/follow-button :: followButton(${isFollowed},${userProfile.getId()})}"></div>
     <div th:replace="~{shared/tweet-messages-pagginated :: tweetsPaginated(${tweets})}"></div>
