@@ -12,9 +12,8 @@ import com.koombea.twitterclone.web.app.models.projections.follow.FollowedSummar
 import com.koombea.twitterclone.web.app.models.projections.follow.FollowerSummary;
 import com.koombea.twitterclone.web.app.models.projections.user.IdOnly;
 import com.koombea.twitterclone.web.app.repositories.FollowRepository;
-import com.koombea.twitterclone.web.app.validations.groups.follow.CreateFollow;
+import com.koombea.twitterclone.web.app.validations.groups.follow.UpdateFollow;
 import jakarta.validation.ValidationException;
-import jakarta.validation.groups.Default;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
@@ -93,7 +92,7 @@ public class FollowService {
         return followRepository.existsByFollowerIdAndFollowedId(followerId, followedId);
     }
 
-    @Validated({CreateFollow.class, Default.class})
+    @Validated(UpdateFollow.class)
     public void markAsFollowBack(Follow followCreated) {
         Optional<Follow> followedBack = findFollowedBack(followCreated.getFollowed().getId(), followCreated.getFollower().getId());
         if (followedBack.isPresent()) {
