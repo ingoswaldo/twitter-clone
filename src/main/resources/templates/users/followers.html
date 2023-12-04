@@ -13,6 +13,7 @@
       <div th:replace="~{shared/follow-button :: followButtonWithRedirection(${follower.isFollowedBy(userAuthenticated.getId())},${follower.getFollowerId()},'follows/followed')}"></div>
     </div>
   </div>
+  <div th:replace="~{shared/pagination :: paginate(${userProfile.getUsername() + '/followers'},${followers.getNumber()},${followers.getSize()},${followers.hasPrevious()},${followers.hasNext()})}"></div>
 </section>
 </body>
 </html>
