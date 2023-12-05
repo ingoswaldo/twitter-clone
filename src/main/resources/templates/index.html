@@ -12,6 +12,11 @@
         <h4>Total Tweets: <span th:text="${totalPosts}"></span></h4>
         <h4>Total Followers: <a th:href="@{/follows/followers}" th:text="${totalFollowers}"></a></h4>
         <h4>Total Followed: <a th:href="@{/follows/followed}" th:text="${totalFollowed}"></a></h4>
+        <h4 th:if="${tweets.getTotalElements() < 1}">No tweets to show</h4>
+        <div th:if="${tweets.getTotalElements() > 0}" th:each="tweet : ${tweets}">
+            <div th:replace="~{shared/tweet :: postSummary(${tweet},${user.getUsername()})}"></div>
+        </div>
+        <div th:replace="~{shared/pagination :: paginate('',${tweets.getNumber()},${tweets.getSize()},${tweets.hasPrevious()},${tweets.hasNext()})}"></div>
     </div>
 </section>
 </body>

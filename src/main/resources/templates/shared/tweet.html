@@ -1,0 +1,4 @@
+<div th:fragment="postSummary(tweet, authenticatedUsername)">
+  <p><span th:text="|${tweet.getFullNameHumanized(authenticatedUsername)},|" style="font-weight: bold"></span> <span th:text="|@${tweet.getUsername()}|"></span> - <span th:text="${tweet.getCreatedAtFormatted()}"></span></p>
+  <p th:text="${tweet.getMessage()}"></p>
+</div>
