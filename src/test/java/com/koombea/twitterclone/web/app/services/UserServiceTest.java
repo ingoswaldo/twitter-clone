@@ -28,13 +28,13 @@ public class UserServiceTest {
 
     @Test
     @Order(1)
-    public void testCreate() {
+    void shouldCreate() {
         User userCreated = userService.create("email@example.com", "username", "full name", "password");
         assertNotNull(userCreated.getId());
     }
 
     @Test
-    public void testDoesNotCreateDuplicatedEmail() {
+    void shouldNotCreateWithDuplicatedEmail() {
         try {
             userService.create("email@example.com", "whatever", "full name", "password");
             fail("Expected exception to be thrown");
@@ -44,7 +44,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testDoesNotCreateDuplicatedUsername() {
+    void shouldNotCreateWithDuplicatedUsername() {
         try {
             userService.create("new_email@example.com", "username", "full name", "password");
             fail("Expected exception to be thrown");
@@ -54,61 +54,55 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testFindIdByUsername() throws EntityNotFoundException {
+    void shouldFindIdByUsername() throws EntityNotFoundException {
         assertNotNull(userService.findIdByUsername("username").getId());
     }
 
     @Test
-    public void testFindIdByUsernameNotFound() throws EntityNotFoundException {
+    void shouldThrowNotFoundWhenFindIdByUsername() throws EntityNotFoundException {
         assertThrows(EntityNotFoundException.class, () -> userService.findIdByUsername("non-registered"));
     }
 
     @Test
-    public void testFindNamesByUsername() throws EntityNotFoundException {
+    void shouldFindNamesByUsername() throws EntityNotFoundException {
         NamesWithIdOnly user = userService.findNamesByUsername("username");
         assertInstanceOf(NamesWithIdOnly.class, user);
-        assertUserInformation(user);
+        assertFalse(user.getId().isEmpty());
+        assertEquals(user.getUsername(), "username");
+        assertEquals(user.getFullName(), "full name");
         assertEquals(user.getFullNameHumanized(), "Full name");
     }
 
     @Test
-    public void testFindNamesByUsernameNotFound() throws EntityNotFoundException {
+    void shouldThrowNotFoundWhenFindNamesByUsername() throws EntityNotFoundException {
         assertThrows(EntityNotFoundException.class, () -> userService.findNamesByUsername("non-registered"));
     }
 
     @Test
-    public void testFindUserByUsername() throws EntityNotFoundException {
+    void shouldFindUserByUsername() throws EntityNotFoundException {
         User user = userService.findUserByUsername("username");
         assertInstanceOf(User.class, user);
-        assertUserInformation(user);
+        assertFalse(user.getId().isEmpty());
+        assertEquals(user.getUsername(), "username");
+        assertEquals(user.getFullName(), "full name");
     }
 
     @Test
-    public void testFindUserByUsernameNotFound() throws EntityNotFoundException {
+    void shouldThrowNotFoundWhenFindUserByUsername() throws EntityNotFoundException {
         assertThrows(EntityNotFoundException.class, () -> userService.findUserByUsername("non-registered"));
     }
 
     @Test
-    public void testFindUserById() throws EntityNotFoundException {
+    void shouldFindUserById() throws EntityNotFoundException {
         User user = userService.findUserById(userService.findIdByUsername("username").getId());
         assertInstanceOf(User.class, user);
-        assertUserInformation(user);
+        assertFalse(user.getId().isEmpty());
+        assertEquals(user.getUsername(), "username");
+        assertEquals(user.getFullName(), "full name");
     }
 
     @Test
-    public void testFindUserByIdNotFound() throws EntityNotFoundException {
+    void shouldThrowNotFoundWhenFindUserById() throws EntityNotFoundException {
         assertThrows(EntityNotFoundException.class, () -> userService.findUserById("whatever1234"));
-    }
-
-    private void assertUserInformation(User user) {
-        assertFalse(user.getId().isEmpty());
-        assertEquals(user.getUsername(), "username");
-        assertEquals(user.getFullName(), "full name");
-    }
-
-    private void assertUserInformation(NamesWithIdOnly user) {
-        assertFalse(user.getId().isEmpty());
-        assertEquals(user.getUsername(), "username");
-        assertEquals(user.getFullName(), "full name");
     }
 }
