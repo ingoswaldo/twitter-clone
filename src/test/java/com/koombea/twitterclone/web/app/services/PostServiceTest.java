@@ -5,11 +5,15 @@
  */
 package com.koombea.twitterclone.web.app.services;
 
+import com.koombea.twitterclone.web.app.AbstractIntegrationTest;
 import com.koombea.twitterclone.web.app.models.entities.Post;
 import com.koombea.twitterclone.web.app.models.projections.post.MessageOnly;
 import com.koombea.twitterclone.web.app.models.projections.post.PostSummary;
 import jakarta.persistence.EntityNotFoundException;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,17 +27,12 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @AutoConfigureTestDatabase
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class PostServiceTest {
+class PostServiceTest extends AbstractIntegrationTest {
     @Autowired
     UserService userService;
 
     @Autowired
     private PostService postService;
-
-    @BeforeAll
-    static void setUp(@Autowired UserService userService) {
-        userService.create("user@example.com", "user", "full name", "password");
-    }
 
     @Test
     @Order(1)
