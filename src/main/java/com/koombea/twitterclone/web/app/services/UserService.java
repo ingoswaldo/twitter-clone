@@ -66,11 +66,4 @@ public class UserService {
 
         return user.get();
     }
-
-    public NamesWithIdOnly findNamesById(String id) throws EntityNotFoundException {
-        Optional<NamesWithIdOnly> user = userRepository.findByIdAndEnabled(id, true, NamesWithIdOnly.class);
-        if (user.isEmpty()) throw new EntityNotFoundException("❌ The user does not exist!!");
-
-        return user.get();
-    }
 }

@@ -21,7 +21,7 @@ import java.util.List;
 @Setter
 @Entity
 @PasswordMatches
-@Table(name = "users", uniqueConstraints = { @UniqueConstraint(columnNames = {"email", "username"})},
+@Table(name = "users", uniqueConstraints = { @UniqueConstraint(columnNames = "email"), @UniqueConstraint(columnNames = "username") },
         indexes = { @Index(name = "email_index", columnList = "email"), @Index(name = "username_index", columnList = "username")})
 public class User extends BaseEntity {
     @Email
