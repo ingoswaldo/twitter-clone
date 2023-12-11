@@ -10,9 +10,11 @@ import com.koombea.twitterclone.web.app.services.UserService;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
+@AutoConfigureTestDatabase
 public abstract class AbstractIntegrationTest {
     @BeforeAll
     static void beforeAll(@Autowired UserService userService) {

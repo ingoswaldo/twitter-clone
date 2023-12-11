@@ -12,14 +12,12 @@ import com.koombea.twitterclone.web.app.models.projections.follow.FollowerSummar
 import jakarta.validation.ValidationException;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@AutoConfigureTestDatabase
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class FollowServiceTest extends AbstractIntegrationTest {
     private final FollowService followService;
