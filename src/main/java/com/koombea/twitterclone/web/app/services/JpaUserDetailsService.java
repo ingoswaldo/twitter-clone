@@ -23,8 +23,12 @@ import java.util.Optional;
 
 @Service
 public class JpaUserDetailsService implements UserDetailsService {
-    @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    public JpaUserDetailsService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
     @Transactional(readOnly = true)

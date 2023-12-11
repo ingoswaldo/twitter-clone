@@ -30,13 +30,13 @@ public class FollowService {
 
     private final UserService userService;
 
-    @Autowired
-    private ApplicationEventPublisher eventPublisher;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Autowired
-    public FollowService(FollowRepository followRepository, UserService userService) {
+    public FollowService(FollowRepository followRepository, UserService userService, ApplicationEventPublisher eventPublisher) {
         this.followRepository = followRepository;
         this.userService = userService;
+        this.eventPublisher = eventPublisher;
     }
 
     public Follow createByUsernames(String followerUsername, String followedUsername) throws ValidationException {
@@ -51,6 +51,8 @@ public class FollowService {
     }
 
     public Follow createByUsernameAndFollowed(String followerUsername, User followed) throws ValidationException {
+        validateSelfFollow(followerUsername, followed.getUsername());
+
         User follower = userService.findUserByUsername(followerUsername);
         Follow follow = new Follow(follower, followed, followerUsername);
         validateDuplicatedFollow(follower, followed);

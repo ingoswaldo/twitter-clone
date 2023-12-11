@@ -10,6 +10,8 @@ import com.koombea.twitterclone.web.app.services.UserService;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 public abstract class AbstractIntegrationTest {
     @BeforeAll
@@ -20,5 +22,9 @@ public abstract class AbstractIntegrationTest {
     @AfterAll
     static void afterAll(@Autowired UserRepository userRepository) {
         userRepository.deleteAll();
+    }
+
+    protected Pageable getPageable() {
+        return PageRequest.of(0,2);
     }
 }

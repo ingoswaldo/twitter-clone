@@ -17,8 +17,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @SpringBootTest
 @AutoConfigureTestDatabase
 class ValidatorServiceTest extends AbstractIntegrationTest {
+    private final ValidatorService validatorService;
+
     @Autowired
-    private ValidatorService validatorService;
+    public ValidatorServiceTest(ValidatorService validatorService) {
+        this.validatorService = validatorService;
+    }
 
     @Test
     void shouldExistsBy() {

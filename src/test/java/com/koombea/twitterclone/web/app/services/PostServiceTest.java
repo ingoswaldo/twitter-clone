@@ -18,8 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.TransactionSystemException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -28,11 +26,15 @@ import static org.junit.jupiter.api.Assertions.*;
 @AutoConfigureTestDatabase
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class PostServiceTest extends AbstractIntegrationTest {
-    @Autowired
-    UserService userService;
+    private final UserService userService;
+
+    private final PostService postService;
 
     @Autowired
-    private PostService postService;
+    public PostServiceTest(UserService userService, PostService postService) {
+        this.userService = userService;
+        this.postService = postService;
+    }
 
     @Test
     @Order(1)
@@ -75,11 +77,7 @@ class PostServiceTest extends AbstractIntegrationTest {
         assertEquals(result.getContent().getFirst().getMessage(), "message");
     }
 
-    private String getUserId() {
+    protected String getUserId() {
         return userService.findIdByUsername("user").getId();
-    }
-
-    private Pageable getPageable() {
-        return PageRequest.of(0,2);
     }
 }

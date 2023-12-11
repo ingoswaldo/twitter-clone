@@ -11,8 +11,12 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ValidatorService {
+    private final ValidationRepository validationRepository;
+
     @Autowired
-    private ValidationRepository validationRepository;
+    public ValidatorService(ValidationRepository validationRepository) {
+        this.validationRepository = validationRepository;
+    }
 
     public boolean existsBy(String tableName, String columnName, Object value) {
         return validationRepository.existBy(tableName, columnName, value);
